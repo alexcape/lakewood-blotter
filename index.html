@@ -19,17 +19,15 @@
 </head>
 <body class="bg-slate-50 h-screen flex flex-col overflow-hidden">
 
-    <header class="bg-slate-900 text-white shadow-md flex-shrink-0">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-4">
-                    <div class="bg-slate-800 p-2.5 rounded-full border border-slate-700">
-                        <i class="fa-solid fa-shield-halved text-blue-400 text-xl"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold tracking-tight">Lakewood Police Department</h1>
-                        <p class="text-slate-400 text-xs font-medium uppercase tracking-wide">Interactive Public Blotter</p>
-                    </div>
+    <header class="bg-slate-900 text-white shadow-md flex-shrink-0 w-full">
+        <div class="w-full px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center space-x-4">
+                <div class="bg-slate-800 p-2.5 rounded-full border border-slate-700">
+                    <i class="fa-solid fa-shield-halved text-blue-400 text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight">Lakewood Police Department</h1>
+                    <p class="text-slate-400 text-xs font-medium uppercase tracking-wide">Interactive Public Blotter</p>
                 </div>
             </div>
         </div>
@@ -38,12 +36,12 @@
     <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
         
         <div class="w-full md:w-1/2 lg:w-5/12 flex flex-col bg-white border-r border-slate-200 overflow-hidden">
-            <div class="p-4 border-b border-slate-200 bg-slate-50 flex-shrink-0 grid grid-cols-2 gap-2">
-                <input type="text" placeholder="Search incidents..." class="col-span-2 block w-full px-3 py-1.5 border border-slate-300 rounded-lg text-sm bg-white">
+            <div class="p-4 border-b border-slate-200 bg-slate-50 flex-shrink-0 grid grid-cols-1 gap-2">
+                <input type="text" placeholder="Search incidents, locations, or officers..." class="block w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-blue-500 focus:border-blue-500 transition-colors">
             </div>
 
             <div id="incident-feed" class="flex-1 overflow-y-auto p-4 space-y-4">
-                <div class="p-4 text-center text-slate-500">Loading latest blotter data...</div>
+                <div class="p-4 text-center text-slate-500 text-sm">Loading latest blotter data...</div>
             </div>
         </div>
 
@@ -53,7 +51,7 @@
 
     </div>
 
-<script>
+    <script>
         // Initialize Leaflet Map
         const map = L.map('map').setView([41.4819, -81.7985], 14);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -61,6 +59,7 @@
         }).addTo(map);
 
         const markersMap = {};
+        let globalBlotterData = []; // Store data globally for filtering
 
         // Fetch the automated JSON data
         async function loadData() {
@@ -73,7 +72,13 @@
                     document.getElementById('incident-feed').innerHTML = '<div class="p-4 text-center text-slate-500 text-sm">No current incidents to display.</div>';
                     return;
                 }
+                
+                globalBlotterData = data; // Save for the search filter
                 renderBlotter(data);
+                
+                // Initialize the search filter listener
+                setupSearchFilter();
+
             } catch (error) {
                 console.error(error);
                 document.getElementById('incident-feed').innerHTML = 
@@ -81,22 +86,37 @@
             }
         }
 
-        // Fix #4: Expandable Descriptions Logic
-        window.toggleDetails = function(id) {
-            const desc = document.getElementById(`desc-${id}`);
-            const btn = document.getElementById(`btn-${id}`);
-            if (desc.classList.contains('line-clamp-2')) {
-                desc.classList.remove('line-clamp-2');
-                btn.innerText = "Show less";
-            } else {
-                desc.classList.add('line-clamp-2');
-                btn.innerText = "Read more";
-            }
-        };
+        // Setup Search Filtering
+        function setupSearchFilter() {
+            const searchInput = document.querySelector('input[placeholder="Search incidents, locations, or officers..."]');
+            
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                
+                const filteredData = globalBlotterData.filter(incident => {
+                    return incident.charge.toLowerCase().includes(searchTerm) || 
+                           incident.raw_address.toLowerCase().includes(searchTerm) ||
+                           incident.officer.toLowerCase().includes(searchTerm) ||
+                           incident.case_number.toLowerCase().includes(searchTerm);
+                });
+                
+                renderBlotter(filteredData);
+            });
+        }
 
         function renderBlotter(blotterData) {
             const feedContainer = document.getElementById('incident-feed');
             feedContainer.innerHTML = '';
+            
+            // Clear existing map markers before re-rendering
+            for (let id in markersMap) {
+                map.removeLayer(markersMap[id].marker);
+            }
+
+            if (blotterData.length === 0) {
+                feedContainer.innerHTML = '<div class="p-4 text-center text-slate-500 text-sm">No matching incidents found.</div>';
+                return;
+            }
 
             blotterData.forEach(incident => {
                 const isRed = incident.badge_color === 'red';
@@ -104,14 +124,6 @@
                 const headerClass = isRed ? 'bg-red-50 border-red-100' : 'bg-blue-50 border-blue-100';
                 const icon = isRed ? 'fa-handcuffs' : 'fa-file-lines';
 
-                // Check if description needs an expand button
-                const needsExpand = incident.details.length > 100;
-                const detailsHTML = needsExpand 
-                    ? `<div id="desc-${incident.id}" class="line-clamp-2 transition-all duration-200">${incident.details}</div>
-                       <button onclick="toggleDetails(${incident.id})" id="btn-${incident.id}" class="text-blue-600 hover:text-blue-800 font-medium text-xs mt-1.5 focus:outline-none">Read more</button>`
-                    : `<div>${incident.details}</div>`;
-
-                // Fix #5: Font sizes bumped up across the board (xs -> sm, sm -> base, base -> lg)
                 const cardHTML = `
                     <div id="card-${incident.id}" class="bg-white rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition-all overflow-hidden flex flex-col">
                         <div class="${headerClass} border-b px-4 py-3 flex justify-between items-center">
@@ -125,9 +137,11 @@
                                 <i class="fa-solid fa-location-dot mt-1 text-blue-500 group-hover:bounce"></i>
                                 <span class="underline decoration-dotted group-hover:decoration-solid">${incident.raw_address}</span>
                             </button>
+                            
                             <div class="bg-slate-50 rounded-lg p-3 text-sm text-slate-700 border border-slate-100 mb-4">
-                                ${detailsHTML}
+                                ${incident.details}
                             </div>
+                            
                             <div class="flex justify-between items-end text-xs">
                                 <div>
                                     <p class="text-slate-500 uppercase font-semibold mb-0.5">Officer</p>
