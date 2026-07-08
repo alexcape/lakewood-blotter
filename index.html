@@ -36,8 +36,14 @@
     <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
         
         <div class="w-full md:w-1/2 lg:w-5/12 flex flex-col bg-white border-r border-slate-200 overflow-hidden">
-            <div class="p-4 border-b border-slate-200 bg-slate-50 flex-shrink-0 grid grid-cols-1 gap-2">
-                <input type="text" placeholder="Search incidents, locations, or officers..." class="block w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-blue-500 focus:border-blue-500 transition-colors">
+            
+            <div class="p-4 border-b border-slate-200 bg-slate-50 flex-shrink-0 grid grid-cols-3 gap-2">
+                <input id="search-input" type="text" placeholder="Search incidents..." class="col-span-2 block w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                <select id="type-filter" class="col-span-1 block w-full px-2 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-blue-500 focus:border-blue-500 transition-colors text-slate-700">
+                    <option value="all">All Types</option>
+                    <option value="arrest">Arrests</option>
+                    <option value="incident">Incidents</option>
+                </select>
             </div>
 
             <div id="incident-feed" class="flex-1 overflow-y-auto p-4 space-y-4">
@@ -68,16 +74,20 @@
                 if (!response.ok) throw new Error("Data file not found");
                 const data = await response.json();
                 
-                if (data.length === 0) {
+                // Safety net: Purge any bad scraper rows before they hit the UI
+                const cleanedData = data.filter(incident => {
+                    const stringified = JSON.stringify(incident).toLowerCase();
+                    return !stringified.includes("event type filter") && !stringified.includes("page ");
+                });
+
+                if (cleanedData.length === 0) {
                     document.getElementById('incident-feed').innerHTML = '<div class="p-4 text-center text-slate-500 text-sm">No current incidents to display.</div>';
                     return;
                 }
                 
-                globalBlotterData = data; // Save for the search filter
-                renderBlotter(data);
-                
-                // Initialize the search filter listener
-                setupSearchFilter();
+                globalBlotterData = cleanedData; // Save cleaned data
+                renderBlotter(globalBlotterData);
+                setupFilters();
 
             } catch (error) {
                 console.error(error);
@@ -86,29 +96,45 @@
             }
         }
 
-        // Setup Search Filtering
-        function setupSearchFilter() {
-            const searchInput = document.querySelector('input[placeholder="Search incidents, locations, or officers..."]');
+        // Setup Filtering (Search + Dropdown)
+        function setupFilters() {
+            const searchInput = document.getElementById('search-input');
+            const typeFilter = document.getElementById('type-filter');
             
-            searchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase();
+            function applyFilters() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedType = typeFilter.value;
                 
                 const filteredData = globalBlotterData.filter(incident => {
-                    return incident.charge.toLowerCase().includes(searchTerm) || 
-                           incident.raw_address.toLowerCase().includes(searchTerm) ||
-                           incident.officer.toLowerCase().includes(searchTerm) ||
-                           incident.case_number.toLowerCase().includes(searchTerm);
+                    // 1. Check Text Search
+                    const matchesSearch = incident.charge.toLowerCase().includes(searchTerm) || 
+                                          incident.raw_address.toLowerCase().includes(searchTerm) ||
+                                          incident.officer.toLowerCase().includes(searchTerm) ||
+                                          incident.case_number.toLowerCase().includes(searchTerm);
+                                          
+                    // 2. Check Type Dropdown
+                    let matchesType = true;
+                    if (selectedType === 'arrest') {
+                        matchesType = incident.type === 'Arrest';
+                    } else if (selectedType === 'incident') {
+                        matchesType = incident.type === 'Incident';
+                    }
+                    
+                    return matchesSearch && matchesType;
                 });
                 
                 renderBlotter(filteredData);
-            });
+            }
+
+            searchInput.addEventListener('input', applyFilters);
+            typeFilter.addEventListener('change', applyFilters);
         }
 
         function renderBlotter(blotterData) {
             const feedContainer = document.getElementById('incident-feed');
             feedContainer.innerHTML = '';
             
-            // Clear existing map markers before re-rendering
+            // Clear existing map markers
             for (let id in markersMap) {
                 map.removeLayer(markersMap[id].marker);
             }
