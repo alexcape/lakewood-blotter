@@ -57,7 +57,7 @@
 
     </div>
 
-    <script>
+<script>
         // Initialize Leaflet Map
         const map = L.map('map').setView([41.4819, -81.7985], 14);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -65,19 +65,52 @@
         }).addTo(map);
 
         const markersMap = {};
-        let globalBlotterData = []; // Store data globally for filtering
+        let globalBlotterData = [];
 
-        // Fetch the automated JSON data
+        // Helper function to format the date and time
+        function formatDateTime(rawDateTimeStr) {
+            if (!rawDateTimeStr) return "Time Unknown";
+            
+            // rawDateTimeStr looks like "7/7/2026 22:44"
+            const parts = rawDateTimeStr.split(' ');
+            if (parts.length !== 2) return rawDateTimeStr;
+            
+            const dateStr = parts[0]; // "7/7/2026"
+            const timeStr = parts[1]; // "22:44"
+            
+            // Format Date (e.g., Jul 7, 2026)
+            const dateObj = new Date(dateStr);
+            const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            
+            // Format Time (e.g., 10:44 PM)
+            const timeParts = timeStr.split(':');
+            let hours = parseInt(timeParts[0]);
+            const minutes = timeParts[1];
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            const formattedTime = `${hours}:${minutes} ${ampm}`;
+            
+            return `${formattedDate} • ${formattedTime}`;
+        }
+
         async function loadData() {
             try {
                 const response = await fetch(`data/blotter.json?t=${new Date().getTime()}`);
                 if (!response.ok) throw new Error("Data file not found");
-                const data = await response.json();
+                let data = await response.json();
                 
-                // Safety net: Purge any bad scraper rows before they hit the UI
-                const cleanedData = data.filter(incident => {
+                // Clean data
+                let cleanedData = data.filter(incident => {
                     const stringified = JSON.stringify(incident).toLowerCase();
                     return !stringified.includes("event type filter") && !stringified.includes("page ");
+                });
+
+                // Sort data newest to oldest
+                cleanedData.sort((a, b) => {
+                    if (!a.raw_datetime) return 1;
+                    if (!b.raw_datetime) return -1;
+                    return new Date(b.raw_datetime) - new Date(a.raw_datetime);
                 });
 
                 if (cleanedData.length === 0) {
@@ -85,7 +118,7 @@
                     return;
                 }
                 
-                globalBlotterData = cleanedData; // Save cleaned data
+                globalBlotterData = cleanedData;
                 renderBlotter(globalBlotterData);
                 setupFilters();
 
@@ -96,7 +129,6 @@
             }
         }
 
-        // Setup Filtering (Search + Dropdown)
         function setupFilters() {
             const searchInput = document.getElementById('search-input');
             const typeFilter = document.getElementById('type-filter');
@@ -106,19 +138,14 @@
                 const selectedType = typeFilter.value;
                 
                 const filteredData = globalBlotterData.filter(incident => {
-                    // 1. Check Text Search
                     const matchesSearch = incident.charge.toLowerCase().includes(searchTerm) || 
                                           incident.raw_address.toLowerCase().includes(searchTerm) ||
                                           incident.officer.toLowerCase().includes(searchTerm) ||
                                           incident.case_number.toLowerCase().includes(searchTerm);
                                           
-                    // 2. Check Type Dropdown
                     let matchesType = true;
-                    if (selectedType === 'arrest') {
-                        matchesType = incident.type === 'Arrest';
-                    } else if (selectedType === 'incident') {
-                        matchesType = incident.type === 'Incident';
-                    }
+                    if (selectedType === 'arrest') matchesType = incident.type === 'Arrest';
+                    else if (selectedType === 'incident') matchesType = incident.type === 'Incident';
                     
                     return matchesSearch && matchesType;
                 });
@@ -134,7 +161,6 @@
             const feedContainer = document.getElementById('incident-feed');
             feedContainer.innerHTML = '';
             
-            // Clear existing map markers
             for (let id in markersMap) {
                 map.removeLayer(markersMap[id].marker);
             }
@@ -149,12 +175,18 @@
                 const themeClass = isRed ? 'bg-red-100 text-red-800 border-red-200' : 'bg-blue-100 text-blue-800 border-blue-200';
                 const headerClass = isRed ? 'bg-red-50 border-red-100' : 'bg-blue-50 border-blue-100';
                 const icon = isRed ? 'fa-handcuffs' : 'fa-file-lines';
+                
+                // Process the timestamp
+                const displayTime = formatDateTime(incident.raw_datetime);
 
                 const cardHTML = `
                     <div id="card-${incident.id}" class="bg-white rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition-all overflow-hidden flex flex-col">
                         <div class="${headerClass} border-b px-4 py-3 flex justify-between items-center">
                             <span class="${themeClass} text-sm font-bold px-2.5 py-1 rounded border uppercase tracking-wide">
                                 <i class="fa-solid ${icon} mr-1"></i> ${incident.type}
+                            </span>
+                            <span class="text-xs font-medium text-slate-600">
+                                <i class="fa-regular fa-clock mr-1"></i> ${displayTime}
                             </span>
                         </div>
                         <div class="p-4">
