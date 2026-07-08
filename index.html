@@ -1,0 +1,104 @@
+<script>
+    // Initialize Leaflet Map
+    const map = L.map('map').setView([41.4819, -81.7985], 14);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const markersMap = {};
+
+    // Fetch the automated JSON data
+    async function loadData() {
+        try {
+            // Add a cache-busting timestamp so the browser always gets today's data
+            const response = await fetch(`data/blotter.json?t=${new Date().getTime()}`);
+            const data = await response.json();
+            renderBlotter(data);
+        } catch (error) {
+            document.getElementById('incident-feed').innerHTML = 
+                '<div class="p-4 text-red-600">Failed to load current blotter data. The scraper may be updating.</div>';
+        }
+    }
+
+    function renderBlotter(blotterData) {
+        const feedContainer = document.getElementById('incident-feed');
+        feedContainer.innerHTML = '';
+
+        blotterData.forEach(incident => {
+            const isRed = incident.badge_color === 'red';
+            const themeClass = isRed ? 'bg-red-100 text-red-800 border-red-200' : 'bg-blue-100 text-blue-800 border-blue-200';
+            const headerClass = isRed ? 'bg-red-50 border-red-100' : 'bg-blue-50 border-blue-100';
+            const icon = isRed ? 'fa-handcuffs' : 'fa-file-lines';
+
+            const cardHTML = `
+                <div id="card-${incident.id}" class="bg-white rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition-all overflow-hidden flex flex-col">
+                    <div class="${headerClass} border-b px-4 py-2.5 flex justify-between items-center">
+                        <span class="${themeClass} text-xs font-bold px-2 py-0.5 rounded border uppercase tracking-wide">
+                            <i class="fa-solid ${icon} mr-1"></i> ${incident.type}
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-base font-bold text-slate-900 mb-1">${incident.charge}</h3>
+                        <button onclick="focusIncident(${incident.id})" class="group flex items-start mt-2 mb-3 space-x-2 text-left text-blue-600 hover:text-blue-800 transition-colors text-xs font-medium focus:outline-none">
+                            <i class="fa-solid fa-location-dot mt-0.5 text-blue-500 group-hover:bounce"></i>
+                            <span class="underline decoration-dotted group-hover:decoration-solid">${incident.raw_address}</span>
+                        </button>
+                        <div class="bg-slate-50 rounded-lg p-2.5 text-xs text-slate-700 border border-slate-100 mb-3 truncate line-clamp-2">
+                            ${incident.details}
+                        </div>
+                        <div class="flex justify-between items-end text-[11px]">
+                            <div>
+                                <p class="text-slate-400 uppercase font-semibold">Officer</p>
+                                <p class="font-medium text-slate-700">${incident.officer}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-slate-400 uppercase font-semibold">Case ID</p>
+                                <p class="font-mono text-slate-700 font-medium">${incident.case_number}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            feedContainer.insertAdjacentHTML('beforeend', cardHTML);
+            geocodeAndPlot(incident);
+        });
+    }
+
+    async function geocodeAndPlot(incident) {
+        if (!incident.clean_address) return;
+        try {
+            // Note: In a production app, you should add a small delay here to respect Nominatim's rate limits
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(incident.clean_address)}&limit=1`;
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data && data.length > 0) {
+                const lat = parseFloat(data[0].lat);
+                const lon = parseFloat(data[0].lon);
+                const marker = L.marker([lat, lon]).addTo(map);
+                marker.bindPopup(`<strong>${incident.charge}</strong><br><span>${incident.raw_address}</span><br><span>ID: ${incident.case_number}</span>`);
+                markersMap[incident.id] = { marker, coords: [lat, lon] };
+            }
+        } catch (error) {
+            console.error(`Failed to plot address:`, error);
+        }
+    }
+
+    function focusIncident(id) {
+        const target = markersMap[id];
+        if (target) {
+            map.setView(target.coords, 17, { animate: true, duration: 1 });
+            target.marker.openPopup();
+            document.querySelectorAll('#incident-feed > div').forEach(card => card.classList.remove('ring-2', 'ring-blue-500', 'border-transparent'));
+            const activeCard = document.getElementById(`card-${id}`);
+            if (activeCard) {
+                activeCard.classList.add('ring-2', 'ring-blue-500', 'border-transparent');
+                activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        } else {
+            alert("Location restricted or could not be mapped.");
+        }
+    }
+
+    window.onload = loadData;
+</script>
