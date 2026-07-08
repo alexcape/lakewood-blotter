@@ -21,6 +21,8 @@ def scrape_p2c():
         soup = BeautifulSoup(html, 'html.parser')
         
         incidents = []
+        seen_cases = set() # Safety net to prevent duplicate rows
+        
         tables = soup.find_all('table')
         
         for table in tables:
@@ -32,24 +34,26 @@ def scrape_p2c():
                     try:
                         raw_case_text = cols[0].text.strip()
                         
-                        # Fix #1 & #2: Look for 'LW' or 'AR' followed by numbers
                         case_match = re.search(r'(LW|AR)\s*\d+', raw_case_text)
                         if not case_match:
                             continue
                             
                         case_num = case_match.group(0)
+                        
+                        # DEDUPLICATION CHECK: If we already scraped this case, skip it!
+                        if case_num in seen_cases:
+                            continue
+                        seen_cases.add(case_num)
+                        
                         charge = cols[3].text.strip()
                         description = cols[1].text.strip()
                         
-# Fix #3: Clean up the description
                         description = re.sub(r'^(?:Society\s+)?VICTIM of\s+', '', description, flags=re.IGNORECASE)
                         
-                        # Extract the Date and Time (P2C usually formats it like "on 22:44, 7/7/2026" or "between... and 01:10, 7/7/2026")
                         date_match = re.search(r'(\d{1,2}:\d{2}),?\s*(\d{1,2}/\d{1,2}/\d{4})', description)
                         if date_match:
                             time_str = date_match.group(1)
                             date_str = date_match.group(2)
-                            # Combine into a sortable string (e.g., "7/7/2026 22:44")
                             raw_datetime = f"{date_str} {time_str}"
                         else:
                             raw_datetime = ""
@@ -81,7 +85,7 @@ def scrape_p2c():
         with open('data/blotter.json', 'w', encoding='utf-8') as f:
             json.dump(incidents, f, indent=4)
             
-        print(f"Successfully scraped {len(incidents)} records.")
+        print(f"Successfully scraped {len(incidents)} unique records.")
 
 if __name__ == "__main__":
     scrape_p2c()
