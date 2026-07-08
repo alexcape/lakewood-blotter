@@ -53,7 +53,7 @@
 
     </div>
 
-    <script>
+<script>
         // Initialize Leaflet Map
         const map = L.map('map').setView([41.4819, -81.7985], 14);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -65,23 +65,34 @@
         // Fetch the automated JSON data
         async function loadData() {
             try {
-                // Add a cache-busting timestamp so the browser always gets today's data
                 const response = await fetch(`data/blotter.json?t=${new Date().getTime()}`);
                 if (!response.ok) throw new Error("Data file not found");
                 const data = await response.json();
                 
                 if (data.length === 0) {
-                    document.getElementById('incident-feed').innerHTML = '<div class="p-4 text-center text-slate-500">No current incidents to display.</div>';
+                    document.getElementById('incident-feed').innerHTML = '<div class="p-4 text-center text-slate-500 text-sm">No current incidents to display.</div>';
                     return;
                 }
-                
                 renderBlotter(data);
             } catch (error) {
                 console.error(error);
                 document.getElementById('incident-feed').innerHTML = 
-                    '<div class="p-4 text-red-600 text-center">Failed to load current blotter data. The scraper may be updating.</div>';
+                    '<div class="p-4 text-red-600 text-center text-sm">Failed to load current blotter data. The scraper may be updating.</div>';
             }
         }
+
+        // Fix #4: Expandable Descriptions Logic
+        window.toggleDetails = function(id) {
+            const desc = document.getElementById(`desc-${id}`);
+            const btn = document.getElementById(`btn-${id}`);
+            if (desc.classList.contains('line-clamp-2')) {
+                desc.classList.remove('line-clamp-2');
+                btn.innerText = "Show less";
+            } else {
+                desc.classList.add('line-clamp-2');
+                btn.innerText = "Read more";
+            }
+        };
 
         function renderBlotter(blotterData) {
             const feedContainer = document.getElementById('incident-feed');
@@ -93,30 +104,38 @@
                 const headerClass = isRed ? 'bg-red-50 border-red-100' : 'bg-blue-50 border-blue-100';
                 const icon = isRed ? 'fa-handcuffs' : 'fa-file-lines';
 
+                // Check if description needs an expand button
+                const needsExpand = incident.details.length > 100;
+                const detailsHTML = needsExpand 
+                    ? `<div id="desc-${incident.id}" class="line-clamp-2 transition-all duration-200">${incident.details}</div>
+                       <button onclick="toggleDetails(${incident.id})" id="btn-${incident.id}" class="text-blue-600 hover:text-blue-800 font-medium text-xs mt-1.5 focus:outline-none">Read more</button>`
+                    : `<div>${incident.details}</div>`;
+
+                // Fix #5: Font sizes bumped up across the board (xs -> sm, sm -> base, base -> lg)
                 const cardHTML = `
                     <div id="card-${incident.id}" class="bg-white rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition-all overflow-hidden flex flex-col">
-                        <div class="${headerClass} border-b px-4 py-2.5 flex justify-between items-center">
-                            <span class="${themeClass} text-xs font-bold px-2 py-0.5 rounded border uppercase tracking-wide">
+                        <div class="${headerClass} border-b px-4 py-3 flex justify-between items-center">
+                            <span class="${themeClass} text-sm font-bold px-2.5 py-1 rounded border uppercase tracking-wide">
                                 <i class="fa-solid ${icon} mr-1"></i> ${incident.type}
                             </span>
                         </div>
                         <div class="p-4">
-                            <h3 class="text-base font-bold text-slate-900 mb-1">${incident.charge}</h3>
-                            <button onclick="focusIncident(${incident.id})" class="group flex items-start mt-2 mb-3 space-x-2 text-left text-blue-600 hover:text-blue-800 transition-colors text-xs font-medium focus:outline-none">
-                                <i class="fa-solid fa-location-dot mt-0.5 text-blue-500 group-hover:bounce"></i>
+                            <h3 class="text-lg font-bold text-slate-900 mb-1">${incident.charge}</h3>
+                            <button onclick="focusIncident(${incident.id})" class="group flex items-start mt-2 mb-3 space-x-2 text-left text-blue-600 hover:text-blue-800 transition-colors text-sm font-medium focus:outline-none">
+                                <i class="fa-solid fa-location-dot mt-1 text-blue-500 group-hover:bounce"></i>
                                 <span class="underline decoration-dotted group-hover:decoration-solid">${incident.raw_address}</span>
                             </button>
-                            <div class="bg-slate-50 rounded-lg p-2.5 text-xs text-slate-700 border border-slate-100 mb-3 truncate line-clamp-2">
-                                ${incident.details}
+                            <div class="bg-slate-50 rounded-lg p-3 text-sm text-slate-700 border border-slate-100 mb-4">
+                                ${detailsHTML}
                             </div>
-                            <div class="flex justify-between items-end text-[11px]">
+                            <div class="flex justify-between items-end text-xs">
                                 <div>
-                                    <p class="text-slate-400 uppercase font-semibold">Officer</p>
-                                    <p class="font-medium text-slate-700">${incident.officer}</p>
+                                    <p class="text-slate-500 uppercase font-semibold mb-0.5">Officer</p>
+                                    <p class="font-medium text-slate-800 text-sm">${incident.officer}</p>
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-slate-400 uppercase font-semibold">Case ID</p>
-                                    <p class="font-mono text-slate-700 font-medium">${incident.case_number}</p>
+                                    <p class="text-slate-500 uppercase font-semibold mb-0.5">Case ID</p>
+                                    <p class="font-mono text-slate-800 font-medium text-sm">${incident.case_number}</p>
                                 </div>
                             </div>
                         </div>
@@ -138,7 +157,7 @@
                     const lat = parseFloat(data[0].lat);
                     const lon = parseFloat(data[0].lon);
                     const marker = L.marker([lat, lon]).addTo(map);
-                    marker.bindPopup(`<strong>${incident.charge}</strong><br><span style="font-size:12px;">${incident.raw_address}</span><br><span style="font-size:12px; color:#2563eb;">ID: ${incident.case_number}</span>`);
+                    marker.bindPopup(`<strong>${incident.charge}</strong><br><span style="font-size:13px;">${incident.raw_address}</span><br><span style="font-size:13px; font-weight:600; color:#2563eb;">ID: ${incident.case_number}</span>`);
                     markersMap[incident.id] = { marker, coords: [lat, lon] };
                 }
             } catch (error) {
@@ -162,9 +181,7 @@
             }
         }
 
-        // Wait until the document is fully loaded before initializing
         document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
 </html>
-``why are you stuck
