@@ -32,21 +32,28 @@ def scrape_p2c():
         tables = soup.find_all('table')
         for table in tables:
             rows = table.find_all('tr')
-            for index, row in enumerate(rows):
+for index, row in enumerate(rows):
                 cols = row.find_all('td')
                 
-                # Check if it looks like a valid data row (requires at least a few columns)
                 if len(cols) > 5:
                     try:
-                        # Extract basic info based on typical P2C column orders
-                        case_num = cols[0].text.strip()
-                        charge = cols[3].text.strip()
+                        raw_case_text = cols[0].text.strip()
                         
-                        # The description column usually holds a massive block of text. 
-                        # We extract it to parse out the date and address.
+                        # Fix #1 & #2: Look for 'LW' or 'AR' followed by numbers. 
+                        # If it doesn't match, it's a junk row (like a page link). Skip it.
+                        case_match = re.search(r'(LW|AR)\s*\d+', raw_case_text)
+                        if not case_match:
+                            continue
+                            
+                        # This extracts JUST the clean case ID (e.g., "LW 26001926")
+                        case_num = case_match.group(0)
+                        
+                        charge = cols[3].text.strip()
                         description = cols[1].text.strip()
                         
-                        # Find the address (usually follows "at " and ends with "OH")
+                        # Fix #3: Clean up the description to remove the repetitive P2C text
+                        description = re.sub(r'^(?:Society\s+)?VICTIM of\s+', '', description, flags=re.IGNORECASE)
+                        
                         address_match = re.search(r'at (.*?, OH)', description)
                         raw_addr = address_match.group(1) if address_match else "Address Restricted"
                         
@@ -55,7 +62,7 @@ def scrape_p2c():
                             "case_number": case_num,
                             "type": "Arrest" if "AR" in case_num else "Incident",
                             "charge": charge if charge else "General Incident",
-                            "date_str": "See Details", # P2C embeds this dynamically
+                            "date_str": "See Details", 
                             "raw_address": raw_addr,
                             "clean_address": clean_address(raw_addr) if raw_addr != "Address Restricted" else "",
                             "details": description,
@@ -63,9 +70,7 @@ def scrape_p2c():
                             "badge_color": "red" if "AR" in case_num else "blue"
                         }
                         
-                        # Only add if it actually looks like a valid case
-                        if incident["case_number"]:
-                            incidents.append(incident)
+                        incidents.append(incident)
                             
                     except Exception as e:
                         print(f"Skipped a row due to parsing error: {e}")
