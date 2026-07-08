@@ -41,9 +41,19 @@ def scrape_p2c():
                         charge = cols[3].text.strip()
                         description = cols[1].text.strip()
                         
-                        # Fix #3: Clean up the description
+# Fix #3: Clean up the description
                         description = re.sub(r'^(?:Society\s+)?VICTIM of\s+', '', description, flags=re.IGNORECASE)
                         
+                        # Extract the Date and Time (P2C usually formats it like "on 22:44, 7/7/2026" or "between... and 01:10, 7/7/2026")
+                        date_match = re.search(r'(\d{1,2}:\d{2}),?\s*(\d{1,2}/\d{1,2}/\d{4})', description)
+                        if date_match:
+                            time_str = date_match.group(1)
+                            date_str = date_match.group(2)
+                            # Combine into a sortable string (e.g., "7/7/2026 22:44")
+                            raw_datetime = f"{date_str} {time_str}"
+                        else:
+                            raw_datetime = ""
+
                         address_match = re.search(r'at (.*?, OH)', description)
                         raw_addr = address_match.group(1) if address_match else "Address Restricted"
                         
@@ -52,7 +62,7 @@ def scrape_p2c():
                             "case_number": case_num,
                             "type": "Arrest" if "AR" in case_num else "Incident",
                             "charge": charge if charge else "General Incident",
-                            "date_str": "See Details", 
+                            "raw_datetime": raw_datetime, 
                             "raw_address": raw_addr,
                             "clean_address": clean_address(raw_addr) if raw_addr != "Address Restricted" else "",
                             "details": description,
