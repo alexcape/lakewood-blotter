@@ -61,16 +61,17 @@
 
     </div>
 
-    <script>
+<script>
         // Initialize Leaflet Map
         const map = L.map('map').setView([41.4819, -81.7985], 14);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        const markersMap = {};
+        let markersMap = {};
         let globalBlotterData = [];
         let showingMapOnMobile = false;
+        let geocodeTimeouts = []; // Tracks staggered pins so they can be cancelled if user searches
 
         // Mobile View Toggle Logic
         const toggleBtn = document.getElementById('mobile-view-toggle');
@@ -87,8 +88,6 @@
                 mapSide.classList.add('block');
                 toggleIcon.classList.replace('fa-map', 'fa-list');
                 toggleText.innerText = 'List View';
-                
-                // Critical: Leaflet needs to recalculate its size when un-hidden
                 setTimeout(() => map.invalidateSize(), 100); 
             } else {
                 feedSide.classList.remove('hidden');
@@ -127,9 +126,16 @@
                 if (!response.ok) throw new Error("Data file not found");
                 let data = await response.json();
                 
+                const uniqueCases = new Set();
                 let cleanedData = data.filter(incident => {
                     const stringified = JSON.stringify(incident).toLowerCase();
-                    return !stringified.includes("event type filter") && !stringified.includes("page ");
+                    if (stringified.includes("event type filter") || stringified.includes("page ")) return false;
+                    
+                    // FRONTEND DEDUPLICATION: Ensure no duplicate IDs render
+                    if (uniqueCases.has(incident.case_number)) return false;
+                    uniqueCases.add(incident.case_number);
+                    
+                    return true;
                 });
 
                 cleanedData.sort((a, b) => {
@@ -186,9 +192,15 @@
             const feedContainer = document.getElementById('incident-feed');
             feedContainer.innerHTML = '';
             
+            // Cancel any pending staggered map pin delays from previous renders
+            geocodeTimeouts.forEach(clearTimeout);
+            geocodeTimeouts = [];
+            
+            // Completely clear existing map markers to prevent stacking
             for (let id in markersMap) {
                 map.removeLayer(markersMap[id].marker);
             }
+            markersMap = {}; // Reset the storage object
 
             if (blotterData.length === 0) {
                 feedContainer.innerHTML = '<div class="p-4 text-center text-slate-500 text-sm">No matching incidents found.</div>';
@@ -238,8 +250,9 @@
                 `;
                 feedContainer.insertAdjacentHTML('beforeend', cardHTML);
                 
-                // STAGGER FIX: Map pins load 1.1 seconds apart to avoid Rate Limiting
-                setTimeout(() => geocodeAndPlot(incident), index * 1100);
+                // Keep the stagger, but save the timeout ID so we can cancel it if needed
+                const timeoutId = setTimeout(() => geocodeAndPlot(incident), index * 1100);
+                geocodeTimeouts.push(timeoutId);
             });
         }
 
@@ -269,13 +282,11 @@
         function focusIncident(id) {
             const target = markersMap[id];
             
-            // Auto-switch to Map View if clicked while on a phone
             if (window.innerWidth < 768 && !showingMapOnMobile) {
                 toggleBtn.click();
             }
 
             if (target) {
-                // Slight delay ensures the map is visible before panning
                 setTimeout(() => {
                     map.setView(target.coords, 17, { animate: true, duration: 1 });
                     target.marker.openPopup();
@@ -285,7 +296,6 @@
                 const activeCard = document.getElementById(`card-${id}`);
                 if (activeCard) {
                     activeCard.classList.add('ring-2', 'ring-blue-500', 'border-transparent');
-                    // Only scroll into view if we are NOT on mobile, otherwise it pulls them off the map
                     if (window.innerWidth >= 768) {
                         activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     }
