@@ -1,104 +1,169 @@
-<script>
-    // Initialize Leaflet Map
-    const map = L.map('map').setView([41.4819, -81.7985], 14);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakewood Police Department - Interactive Blotter</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        #map { height: 100%; width: 100%; z-index: 1; }
+    </style>
+</head>
+<body class="bg-slate-50 h-screen flex flex-col overflow-hidden">
 
-    const markersMap = {};
-
-    // Fetch the automated JSON data
-    async function loadData() {
-        try {
-            // Add a cache-busting timestamp so the browser always gets today's data
-            const response = await fetch(`data/blotter.json?t=${new Date().getTime()}`);
-            const data = await response.json();
-            renderBlotter(data);
-        } catch (error) {
-            document.getElementById('incident-feed').innerHTML = 
-                '<div class="p-4 text-red-600">Failed to load current blotter data. The scraper may be updating.</div>';
-        }
-    }
-
-    function renderBlotter(blotterData) {
-        const feedContainer = document.getElementById('incident-feed');
-        feedContainer.innerHTML = '';
-
-        blotterData.forEach(incident => {
-            const isRed = incident.badge_color === 'red';
-            const themeClass = isRed ? 'bg-red-100 text-red-800 border-red-200' : 'bg-blue-100 text-blue-800 border-blue-200';
-            const headerClass = isRed ? 'bg-red-50 border-red-100' : 'bg-blue-50 border-blue-100';
-            const icon = isRed ? 'fa-handcuffs' : 'fa-file-lines';
-
-            const cardHTML = `
-                <div id="card-${incident.id}" class="bg-white rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition-all overflow-hidden flex flex-col">
-                    <div class="${headerClass} border-b px-4 py-2.5 flex justify-between items-center">
-                        <span class="${themeClass} text-xs font-bold px-2 py-0.5 rounded border uppercase tracking-wide">
-                            <i class="fa-solid ${icon} mr-1"></i> ${incident.type}
-                        </span>
+    <header class="bg-slate-900 text-white shadow-md flex-shrink-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-slate-800 p-2.5 rounded-full border border-slate-700">
+                        <i class="fa-solid fa-shield-halved text-blue-400 text-xl"></i>
                     </div>
-                    <div class="p-4">
-                        <h3 class="text-base font-bold text-slate-900 mb-1">${incident.charge}</h3>
-                        <button onclick="focusIncident(${incident.id})" class="group flex items-start mt-2 mb-3 space-x-2 text-left text-blue-600 hover:text-blue-800 transition-colors text-xs font-medium focus:outline-none">
-                            <i class="fa-solid fa-location-dot mt-0.5 text-blue-500 group-hover:bounce"></i>
-                            <span class="underline decoration-dotted group-hover:decoration-solid">${incident.raw_address}</span>
-                        </button>
-                        <div class="bg-slate-50 rounded-lg p-2.5 text-xs text-slate-700 border border-slate-100 mb-3 truncate line-clamp-2">
-                            ${incident.details}
-                        </div>
-                        <div class="flex justify-between items-end text-[11px]">
-                            <div>
-                                <p class="text-slate-400 uppercase font-semibold">Officer</p>
-                                <p class="font-medium text-slate-700">${incident.officer}</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-slate-400 uppercase font-semibold">Case ID</p>
-                                <p class="font-mono text-slate-700 font-medium">${incident.case_number}</p>
-                            </div>
-                        </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-tight">Lakewood Police Department</h1>
+                        <p class="text-slate-400 text-xs font-medium uppercase tracking-wide">Interactive Public Blotter</p>
                     </div>
                 </div>
-            `;
-            feedContainer.insertAdjacentHTML('beforeend', cardHTML);
-            geocodeAndPlot(incident);
-        });
-    }
+            </div>
+        </div>
+    </header>
 
-    async function geocodeAndPlot(incident) {
-        if (!incident.clean_address) return;
-        try {
-            // Note: In a production app, you should add a small delay here to respect Nominatim's rate limits
-            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(incident.clean_address)}&limit=1`;
-            const response = await fetch(url);
-            const data = await response.json();
+    <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+        
+        <div class="w-full md:w-1/2 lg:w-5/12 flex flex-col bg-white border-r border-slate-200 overflow-hidden">
+            <div class="p-4 border-b border-slate-200 bg-slate-50 flex-shrink-0 grid grid-cols-2 gap-2">
+                <input type="text" placeholder="Search incidents..." class="col-span-2 block w-full px-3 py-1.5 border border-slate-300 rounded-lg text-sm bg-white">
+            </div>
 
-            if (data && data.length > 0) {
-                const lat = parseFloat(data[0].lat);
-                const lon = parseFloat(data[0].lon);
-                const marker = L.marker([lat, lon]).addTo(map);
-                marker.bindPopup(`<strong>${incident.charge}</strong><br><span>${incident.raw_address}</span><br><span>ID: ${incident.case_number}</span>`);
-                markersMap[incident.id] = { marker, coords: [lat, lon] };
+            <div id="incident-feed" class="flex-1 overflow-y-auto p-4 space-y-4">
+                <div class="p-4 text-center text-slate-500">Loading latest blotter data...</div>
+            </div>
+        </div>
+
+        <div class="w-full md:w-1/2 lg:w-7/12 h-2/5 md:h-full relative bg-slate-200">
+            <div id="map"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // Initialize Leaflet Map
+        const map = L.map('map').setView([41.4819, -81.7985], 14);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        const markersMap = {};
+
+        // Fetch the automated JSON data
+        async function loadData() {
+            try {
+                // Add a cache-busting timestamp so the browser always gets today's data
+                const response = await fetch(`data/blotter.json?t=${new Date().getTime()}`);
+                if (!response.ok) throw new Error("Data file not found");
+                const data = await response.json();
+                
+                if (data.length === 0) {
+                    document.getElementById('incident-feed').innerHTML = '<div class="p-4 text-center text-slate-500">No current incidents to display.</div>';
+                    return;
+                }
+                
+                renderBlotter(data);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('incident-feed').innerHTML = 
+                    '<div class="p-4 text-red-600 text-center">Failed to load current blotter data. The scraper may be updating.</div>';
             }
-        } catch (error) {
-            console.error(`Failed to plot address:`, error);
         }
-    }
 
-    function focusIncident(id) {
-        const target = markersMap[id];
-        if (target) {
-            map.setView(target.coords, 17, { animate: true, duration: 1 });
-            target.marker.openPopup();
-            document.querySelectorAll('#incident-feed > div').forEach(card => card.classList.remove('ring-2', 'ring-blue-500', 'border-transparent'));
-            const activeCard = document.getElementById(`card-${id}`);
-            if (activeCard) {
-                activeCard.classList.add('ring-2', 'ring-blue-500', 'border-transparent');
-                activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        function renderBlotter(blotterData) {
+            const feedContainer = document.getElementById('incident-feed');
+            feedContainer.innerHTML = '';
+
+            blotterData.forEach(incident => {
+                const isRed = incident.badge_color === 'red';
+                const themeClass = isRed ? 'bg-red-100 text-red-800 border-red-200' : 'bg-blue-100 text-blue-800 border-blue-200';
+                const headerClass = isRed ? 'bg-red-50 border-red-100' : 'bg-blue-50 border-blue-100';
+                const icon = isRed ? 'fa-handcuffs' : 'fa-file-lines';
+
+                const cardHTML = `
+                    <div id="card-${incident.id}" class="bg-white rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition-all overflow-hidden flex flex-col">
+                        <div class="${headerClass} border-b px-4 py-2.5 flex justify-between items-center">
+                            <span class="${themeClass} text-xs font-bold px-2 py-0.5 rounded border uppercase tracking-wide">
+                                <i class="fa-solid ${icon} mr-1"></i> ${incident.type}
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-base font-bold text-slate-900 mb-1">${incident.charge}</h3>
+                            <button onclick="focusIncident(${incident.id})" class="group flex items-start mt-2 mb-3 space-x-2 text-left text-blue-600 hover:text-blue-800 transition-colors text-xs font-medium focus:outline-none">
+                                <i class="fa-solid fa-location-dot mt-0.5 text-blue-500 group-hover:bounce"></i>
+                                <span class="underline decoration-dotted group-hover:decoration-solid">${incident.raw_address}</span>
+                            </button>
+                            <div class="bg-slate-50 rounded-lg p-2.5 text-xs text-slate-700 border border-slate-100 mb-3 truncate line-clamp-2">
+                                ${incident.details}
+                            </div>
+                            <div class="flex justify-between items-end text-[11px]">
+                                <div>
+                                    <p class="text-slate-400 uppercase font-semibold">Officer</p>
+                                    <p class="font-medium text-slate-700">${incident.officer}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-slate-400 uppercase font-semibold">Case ID</p>
+                                    <p class="font-mono text-slate-700 font-medium">${incident.case_number}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                feedContainer.insertAdjacentHTML('beforeend', cardHTML);
+                geocodeAndPlot(incident);
+            });
+        }
+
+        async function geocodeAndPlot(incident) {
+            if (!incident.clean_address) return;
+            try {
+                const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(incident.clean_address)}&limit=1`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    const lat = parseFloat(data[0].lat);
+                    const lon = parseFloat(data[0].lon);
+                    const marker = L.marker([lat, lon]).addTo(map);
+                    marker.bindPopup(`<strong>${incident.charge}</strong><br><span style="font-size:12px;">${incident.raw_address}</span><br><span style="font-size:12px; color:#2563eb;">ID: ${incident.case_number}</span>`);
+                    markersMap[incident.id] = { marker, coords: [lat, lon] };
+                }
+            } catch (error) {
+                console.error(`Failed to plot address:`, error);
             }
-        } else {
-            alert("Location restricted or could not be mapped.");
         }
-    }
 
-    window.onload = loadData;
-</script>
+        function focusIncident(id) {
+            const target = markersMap[id];
+            if (target) {
+                map.setView(target.coords, 17, { animate: true, duration: 1 });
+                target.marker.openPopup();
+                document.querySelectorAll('#incident-feed > div').forEach(card => card.classList.remove('ring-2', 'ring-blue-500', 'border-transparent'));
+                const activeCard = document.getElementById(`card-${id}`);
+                if (activeCard) {
+                    activeCard.classList.add('ring-2', 'ring-blue-500', 'border-transparent');
+                    activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            } else {
+                alert("Location restricted or could not be mapped.");
+            }
+        }
+
+        // Wait until the document is fully loaded before initializing
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>
