@@ -17,9 +17,9 @@
         #map { height: 100%; width: 100%; z-index: 1; }
     </style>
 </head>
-<body class="bg-slate-50 h-screen flex flex-col overflow-hidden">
+<body class="bg-slate-50 h-screen flex flex-col overflow-hidden relative">
 
-    <header class="bg-slate-900 text-white shadow-md flex-shrink-0 w-full">
+    <header class="bg-slate-900 text-white shadow-md flex-shrink-0 w-full z-10">
         <div class="w-full px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex items-center space-x-4">
                 <div class="bg-slate-800 p-2.5 rounded-full border border-slate-700">
@@ -33,31 +33,35 @@
         </div>
     </header>
 
-    <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+    <div class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
         
-        <div class="w-full md:w-1/2 lg:w-5/12 flex flex-col bg-white border-r border-slate-200 overflow-hidden">
-            
+        <div id="feed-side" class="w-full md:w-1/2 lg:w-5/12 flex flex-col bg-white border-r border-slate-200 overflow-hidden h-full">
             <div class="p-4 border-b border-slate-200 bg-slate-50 flex-shrink-0 grid grid-cols-3 gap-2">
                 <input id="search-input" type="text" placeholder="Search incidents..." class="col-span-2 block w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-blue-500 focus:border-blue-500 transition-colors">
                 <select id="type-filter" class="col-span-1 block w-full px-2 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-blue-500 focus:border-blue-500 transition-colors text-slate-700">
-                    <option value="all">All Types</option>
+                    <option value="all">All</option>
                     <option value="arrest">Arrests</option>
                     <option value="incident">Incidents</option>
                 </select>
             </div>
 
-            <div id="incident-feed" class="flex-1 overflow-y-auto p-4 space-y-4">
+            <div id="incident-feed" class="flex-1 overflow-y-auto p-4 space-y-4 pb-24 md:pb-4">
                 <div class="p-4 text-center text-slate-500 text-sm">Loading latest blotter data...</div>
             </div>
         </div>
 
-        <div class="w-full md:w-1/2 lg:w-7/12 h-2/5 md:h-full relative bg-slate-200">
+        <div id="map-side" class="hidden md:block w-full md:w-1/2 lg:w-7/12 h-full relative bg-slate-200">
             <div id="map"></div>
         </div>
 
+        <button id="mobile-view-toggle" class="md:hidden absolute bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-full shadow-xl font-medium z-[1000] flex items-center space-x-2 border border-blue-700 transition-transform active:scale-95">
+            <i id="toggle-icon" class="fa-solid fa-map"></i>
+            <span id="toggle-text">Map View</span>
+        </button>
+
     </div>
 
-<script>
+    <script>
         // Initialize Leaflet Map
         const map = L.map('map').setView([41.4819, -81.7985], 14);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -66,29 +70,52 @@
 
         const markersMap = {};
         let globalBlotterData = [];
+        let showingMapOnMobile = false;
 
-        // Helper function to format the date and time
+        // Mobile View Toggle Logic
+        const toggleBtn = document.getElementById('mobile-view-toggle');
+        const feedSide = document.getElementById('feed-side');
+        const mapSide = document.getElementById('map-side');
+        const toggleIcon = document.getElementById('toggle-icon');
+        const toggleText = document.getElementById('toggle-text');
+
+        toggleBtn.addEventListener('click', () => {
+            showingMapOnMobile = !showingMapOnMobile;
+            if (showingMapOnMobile) {
+                feedSide.classList.add('hidden');
+                mapSide.classList.remove('hidden');
+                mapSide.classList.add('block');
+                toggleIcon.classList.replace('fa-map', 'fa-list');
+                toggleText.innerText = 'List View';
+                
+                // Critical: Leaflet needs to recalculate its size when un-hidden
+                setTimeout(() => map.invalidateSize(), 100); 
+            } else {
+                feedSide.classList.remove('hidden');
+                mapSide.classList.add('hidden');
+                mapSide.classList.remove('block');
+                toggleIcon.classList.replace('fa-list', 'fa-map');
+                toggleText.innerText = 'Map View';
+            }
+        });
+
         function formatDateTime(rawDateTimeStr) {
             if (!rawDateTimeStr) return "Time Unknown";
-            
-            // rawDateTimeStr looks like "7/7/2026 22:44"
             const parts = rawDateTimeStr.split(' ');
             if (parts.length !== 2) return rawDateTimeStr;
             
-            const dateStr = parts[0]; // "7/7/2026"
-            const timeStr = parts[1]; // "22:44"
+            const dateStr = parts[0];
+            const timeStr = parts[1];
             
-            // Format Date (e.g., Jul 7, 2026)
             const dateObj = new Date(dateStr);
             const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             
-            // Format Time (e.g., 10:44 PM)
             const timeParts = timeStr.split(':');
             let hours = parseInt(timeParts[0]);
             const minutes = timeParts[1];
             const ampm = hours >= 12 ? 'PM' : 'AM';
             hours = hours % 12;
-            hours = hours ? hours : 12; // the hour '0' should be '12'
+            hours = hours ? hours : 12; 
             const formattedTime = `${hours}:${minutes} ${ampm}`;
             
             return `${formattedDate} • ${formattedTime}`;
@@ -100,13 +127,11 @@
                 if (!response.ok) throw new Error("Data file not found");
                 let data = await response.json();
                 
-                // Clean data
                 let cleanedData = data.filter(incident => {
                     const stringified = JSON.stringify(incident).toLowerCase();
                     return !stringified.includes("event type filter") && !stringified.includes("page ");
                 });
 
-                // Sort data newest to oldest
                 cleanedData.sort((a, b) => {
                     if (!a.raw_datetime) return 1;
                     if (!b.raw_datetime) return -1;
@@ -125,7 +150,7 @@
             } catch (error) {
                 console.error(error);
                 document.getElementById('incident-feed').innerHTML = 
-                    '<div class="p-4 text-red-600 text-center text-sm">Failed to load current blotter data. The scraper may be updating.</div>';
+                    '<div class="p-4 text-red-600 text-center text-sm">Failed to load current blotter data.</div>';
             }
         }
 
@@ -170,13 +195,11 @@
                 return;
             }
 
-            blotterData.forEach(incident => {
+            blotterData.forEach((incident, index) => {
                 const isRed = incident.badge_color === 'red';
                 const themeClass = isRed ? 'bg-red-100 text-red-800 border-red-200' : 'bg-blue-100 text-blue-800 border-blue-200';
                 const headerClass = isRed ? 'bg-red-50 border-red-100' : 'bg-blue-50 border-blue-100';
                 const icon = isRed ? 'fa-handcuffs' : 'fa-file-lines';
-                
-                // Process the timestamp
                 const displayTime = formatDateTime(incident.raw_datetime);
 
                 const cardHTML = `
@@ -214,7 +237,9 @@
                     </div>
                 `;
                 feedContainer.insertAdjacentHTML('beforeend', cardHTML);
-                geocodeAndPlot(incident);
+                
+                // STAGGER FIX: Map pins load 1.1 seconds apart to avoid Rate Limiting
+                setTimeout(() => geocodeAndPlot(incident), index * 1100);
             });
         }
 
@@ -223,6 +248,10 @@
             try {
                 const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(incident.clean_address)}&limit=1`;
                 const response = await fetch(url);
+                if (response.status === 429) {
+                    console.warn("Nominatim Rate Limit hit. Pin skipped.");
+                    return;
+                }
                 const data = await response.json();
 
                 if (data && data.length > 0) {
@@ -239,17 +268,30 @@
 
         function focusIncident(id) {
             const target = markersMap[id];
+            
+            // Auto-switch to Map View if clicked while on a phone
+            if (window.innerWidth < 768 && !showingMapOnMobile) {
+                toggleBtn.click();
+            }
+
             if (target) {
-                map.setView(target.coords, 17, { animate: true, duration: 1 });
-                target.marker.openPopup();
+                // Slight delay ensures the map is visible before panning
+                setTimeout(() => {
+                    map.setView(target.coords, 17, { animate: true, duration: 1 });
+                    target.marker.openPopup();
+                }, 200);
+
                 document.querySelectorAll('#incident-feed > div').forEach(card => card.classList.remove('ring-2', 'ring-blue-500', 'border-transparent'));
                 const activeCard = document.getElementById(`card-${id}`);
                 if (activeCard) {
                     activeCard.classList.add('ring-2', 'ring-blue-500', 'border-transparent');
-                    activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    // Only scroll into view if we are NOT on mobile, otherwise it pulls them off the map
+                    if (window.innerWidth >= 768) {
+                        activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
                 }
             } else {
-                alert("Location restricted or could not be mapped.");
+                alert("Location coordinates still rendering or restricted for this incident.");
             }
         }
 
