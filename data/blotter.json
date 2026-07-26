@@ -1,50 +1,50 @@
 [
     {
         "id": 5,
-        "case_number": "AR  26002103",
-        "type": "Arrest",
+        "case_number": "LW  26002124",
+        "type": "Incident",
         "charge": "Event Type Filter:\n\n- ALL -\nArrests\nIncidents",
         "raw_datetime": "",
         "raw_address": "Address Restricted",
         "clean_address": "",
         "details": "Export To Excel",
         "officer": "",
-        "badge_color": "red"
-    },
-    {
-        "id": 10,
-        "case_number": "AR  260021151",
-        "type": "Arrest",
-        "charge": "1) Theft (M) and 2) Drug Paraphernalia (M),",
-        "raw_datetime": "",
-        "raw_address": "2100-BLK Warren Rd/athens Ave, Lakewood, OH",
-        "clean_address": "2100 Warren Rd/athens Ave, Lakewood, OH",
-        "details": "Weisenseel, Chip Francis (W /M/44) Arrest on chrg of 1) Theft (M) and 2) Drug Paraphernalia (M), at 2100-BLK Warren Rd/athens Ave, Lakewood, OH,  on 7/24/2026 16:00.",
-        "officer": "Rafter, C N",
-        "badge_color": "red"
-    },
-    {
-        "id": 11,
-        "case_number": "LW  26002120",
-        "type": "Incident",
-        "charge": "MVA GENERAL",
-        "raw_datetime": "7/24/2026 19:42",
-        "raw_address": "Address Restricted",
-        "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Mva General (C), at [Address],   on 19:42, 7/24/2026. Reported: 19:42, 7/24/2026.",
-        "officer": "Drake, R J",
         "badge_color": "blue"
     },
     {
         "id": 12,
-        "case_number": "LW  26002123",
+        "case_number": "LW  26002125",
         "type": "Incident",
-        "charge": "GIVING FALSE INFORMATION TO LAW ENFORCEMENT OFFICER",
-        "raw_datetime": "7/24/2026 22:15",
-        "raw_address": "1600-BLK W 117th St/madison Ave, Cleveland, OH",
-        "clean_address": "1600 W 117th St/madison Ave, Cleveland, OH",
-        "details": "Giving False Information To Law Enforcement Officer (C), at 1600-BLK W 117th St/madison Ave, Cleveland, OH,  between 22:15, 7/24/2026 and 22:16, 7/24/2026. Reported: 22:16, 7/24/2026.",
-        "officer": "Williams, C D",
+        "charge": "TPO RECEIVED",
+        "raw_datetime": "7/25/2026 08:05",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "[Restricted] VICTIM of Tpo Received (C), at [Address],   between 08:05, 7/25/2026 and 08:06, 7/25/2026. Reported: 08:06, 7/25/2026.",
+        "officer": "Wallace, E A",
+        "badge_color": "blue"
+    },
+    {
+        "id": 13,
+        "case_number": "LW  26002127",
+        "type": "Incident",
+        "charge": "TPO RECEIVED",
+        "raw_datetime": "7/25/2026 09:00",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "[Restricted] VICTIM of Tpo Received (C), at [Address],   between 09:00, 7/25/2026 and 09:01, 7/25/2026. Reported: 09:01, 7/25/2026.",
+        "officer": "Wallace, E A",
+        "badge_color": "blue"
+    },
+    {
+        "id": 14,
+        "case_number": "LW  26002128",
+        "type": "Incident",
+        "charge": "MVA HIT SKIP",
+        "raw_datetime": "7/25/2026 09:05",
+        "raw_address": "1500-BLK Warren Rd, Lakewood, OH",
+        "clean_address": "1500 Warren Rd, Lakewood, OH",
+        "details": "[Restricted] VICTIM of Mva Hit Skip (C), at 1500-BLK Warren Rd, Lakewood, OH,  between 09:05, 7/25/2026 and 09:06, 7/25/2026. Reported: 09:06, 7/25/2026.",
+        "officer": "Keenan, N S",
         "badge_color": "blue"
     }
 ]
