@@ -1,7 +1,7 @@
 [
     {
         "id": 5,
-        "case_number": "AR  26002114",
+        "case_number": "AR  26002226",
         "type": "Arrest",
         "charge": "Event Type Filter:\n\n- ALL -\nArrests\nIncidents",
         "raw_datetime": "",
@@ -12,75 +12,39 @@
         "badge_color": "red"
     },
     {
+        "id": 10,
+        "case_number": "LW  26002223",
+        "type": "Incident",
+        "charge": "HARASSMENT BY INMATE - SIMPLE ASSAULT",
+        "raw_datetime": "8/4/2026 00:19",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "[Missing Name]  VICTIM of Harassment By Inmate - Simple Assault (A), at [Address],   on 00:19, 8/4/2026. Reported: 00:19, 8/4/2026.",
+        "officer": "Fischer, D C",
+        "badge_color": "blue"
+    },
+    {
+        "id": 11,
+        "case_number": "LW  26002224",
+        "type": "Incident",
+        "charge": "CIT",
+        "raw_datetime": "8/4/2026 12:55",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "[Missing Name]  VICTIM of Cit (C), at [Address],   between 12:55, 8/4/2026 and 12:56, 8/4/2026. Reported: 12:56, 8/4/2026.",
+        "officer": "Bixel, J S",
+        "badge_color": "blue"
+    },
+    {
         "id": 12,
-        "case_number": "AR  26002212",
-        "type": "Arrest",
-        "charge": "Assault (F),",
-        "raw_datetime": "",
-        "raw_address": "11800-BLK S Lane Dr, Lakewood, OH",
-        "clean_address": "11800 S Lane Dr, Lakewood, OH",
-        "details": "Robinson, Nixie N (B /F/32) Arrest on chrg of Assault (F), at 11800-BLK S Lane Dr, Lakewood, OH,  on 8/3/2026 11:16.",
-        "officer": "Hannaman, C R",
-        "badge_color": "red"
-    },
-    {
-        "id": 13,
-        "case_number": "AR  260022161",
-        "type": "Arrest",
-        "charge": "1) Drug Paraphernalia (M) and 2) Possessing Drug Abuse Instruments (M),",
-        "raw_datetime": "",
-        "raw_address": "14000-BLK Detroit Ave, Lakewood, OH",
-        "clean_address": "14000 Detroit Ave, Lakewood, OH",
-        "details": "Husarcik, Crystal M (W /F/34) Arrest on chrg of 1) Drug Paraphernalia (M) and 2) Possessing Drug Abuse Instruments (M), at 14000-BLK Detroit Ave, Lakewood, OH,  on 8/3/2026 15:20.",
-        "officer": "Hutchinson, B L",
-        "badge_color": "red"
-    },
-    {
-        "id": 15,
-        "case_number": "LW  26002209",
+        "case_number": "LW  26002225",
         "type": "Incident",
-        "charge": "DISTURBANCE",
-        "raw_datetime": "8/3/2026 00:08",
+        "charge": "INFORMATION",
+        "raw_datetime": "8/3/2026 17:30",
         "raw_address": "Address Restricted",
         "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Disturbance (C), at [Address],   between 00:08, 8/3/2026 and 00:09, 8/3/2026. Reported: 00:09, 8/3/2026.",
-        "officer": "Nicholson, M J",
-        "badge_color": "blue"
-    },
-    {
-        "id": 16,
-        "case_number": "LW  26002210",
-        "type": "Incident",
-        "charge": "THEFT",
-        "raw_datetime": "8/2/2026 00:21",
-        "raw_address": "17500-BLK Madison Ave, Lakewood, OH",
-        "clean_address": "17500 Madison Ave, Lakewood, OH",
-        "details": "[Restricted] VICTIM of Theft (C), at 17500-BLK Madison Ave, Lakewood, OH,  between 00:21, 8/2/2026 and 01:00, 8/2/2026. Reported: 07:30, 8/3/2026.",
-        "officer": "Dworakowski, M J",
-        "badge_color": "blue"
-    },
-    {
-        "id": 17,
-        "case_number": "LW  26002212",
-        "type": "Incident",
-        "charge": "FELONIOUS ASSAULT",
-        "raw_datetime": "8/3/2026 11:46",
-        "raw_address": "11800-BLK S Lane Dr, Lakewood, OH",
-        "clean_address": "11800 S Lane Dr, Lakewood, OH",
-        "details": "[Restricted] VICTIM of Felonious Assault (C), at 11800-BLK S Lane Dr, Lakewood, OH,  on 11:46, 8/3/2026. Reported: 11:46, 8/3/2026.",
-        "officer": "Hutchinson, B L",
-        "badge_color": "blue"
-    },
-    {
-        "id": 18,
-        "case_number": "LW  26002213",
-        "type": "Incident",
-        "charge": "PROPERTY FOUND",
-        "raw_datetime": "8/3/2026 08:14",
-        "raw_address": "Address Restricted",
-        "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Property Found (C), at [Address],   on 08:14, 8/3/2026. Reported: 08:14, 8/3/2026.",
-        "officer": "Betts, J E",
+        "details": "[Missing Name]  VICTIM of Information (C), at [Address],   between 17:30, 8/3/2026 and 17:42, 8/4/2026. Reported: 17:42, 8/4/2026.",
+        "officer": "Tarr, C L",
         "badge_color": "blue"
     }
 ]
