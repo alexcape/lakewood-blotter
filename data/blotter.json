@@ -1,1 +1,122 @@
-[]
+[
+    {
+        "id": 5,
+        "case_number": "AR  260022701",
+        "type": "Arrest",
+        "charge": "Event Type Filter:\n\n- ALL -\nArrests\nIncidents",
+        "raw_datetime": "",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "Export To Excel",
+        "officer": "",
+        "badge_color": "red"
+    },
+    {
+        "id": 10,
+        "case_number": "AR  26002278",
+        "type": "Arrest",
+        "charge": "Domestic Violence (M),",
+        "raw_datetime": "",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "Negron, Juan Ramon Crespo (B /M/42) Arrest on chrg of Domestic Violence (M), [Missing Address],   on 8/9/2026 21:38.",
+        "officer": "Chilson, R J",
+        "badge_color": "red"
+    },
+    {
+        "id": 11,
+        "case_number": "LW  26002267",
+        "type": "Incident",
+        "charge": "FAILURE TO COMPLY WITH ORDER OR SIGNAL OF P.O.",
+        "raw_datetime": "8/9/2026 02:46",
+        "raw_address": "12400-BLK Clifton Blvd/cove Ave, Lakewood, OH",
+        "clean_address": "12400 Clifton Blvd/cove Ave, Lakewood, OH",
+        "details": "Failure To Comply With Order Or Signal Of P.o. (C), at 12400-BLK Clifton Blvd/cove Ave, Lakewood, OH,  between 02:46, 8/9/2026 and 02:47, 8/9/2026. Reported: 02:47, 8/9/2026.",
+        "officer": "Fischer, D C",
+        "badge_color": "blue"
+    },
+    {
+        "id": 12,
+        "case_number": "LW  26002268",
+        "type": "Incident",
+        "charge": "DISTURBANCE",
+        "raw_datetime": "8/9/2026 02:30",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "[Missing Name]  VICTIM of Disturbance (C), at [Address],   on 02:30, 8/9/2026. Reported: 02:30, 8/9/2026.",
+        "officer": "Dulik, M J",
+        "badge_color": "blue"
+    },
+    {
+        "id": 13,
+        "case_number": "LW  26002269",
+        "type": "Incident",
+        "charge": "CRIMINAL DAMAGING OR ENDANGERING",
+        "raw_datetime": "8/9/2026 04:13",
+        "raw_address": "12900-BLK Emerson Ave, Lakewood, OH",
+        "clean_address": "12900 Emerson Ave, Lakewood, OH",
+        "details": "[Restricted] VICTIM of Criminal Damaging Or Endangering (C), at 12900-BLK Emerson Ave, Lakewood, OH,  on 04:13, 8/9/2026. Reported: 04:13, 8/9/2026.",
+        "officer": "Dulik, M J",
+        "badge_color": "blue"
+    },
+    {
+        "id": 14,
+        "case_number": "LW  26002271",
+        "type": "Incident",
+        "charge": "DAMAGE TO PROPERTY",
+        "raw_datetime": "8/8/2026 16:00",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "[Missing Name]  VICTIM of Damage To Property (C), at [Address],   between 16:00, 8/8/2026 and 10:41, 8/9/2026. Reported: 10:41, 8/9/2026.",
+        "officer": "Bixel, J S",
+        "badge_color": "blue"
+    },
+    {
+        "id": 15,
+        "case_number": "LW  26002272",
+        "type": "Incident",
+        "charge": "PROPERTY LOST",
+        "raw_datetime": "8/9/2026 11:00",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "[Missing Name]  VICTIM of Property Lost (C), at [Address],   between 11:00, 8/9/2026 and 11:05, 8/9/2026. Reported: 11:35, 8/9/2026.",
+        "officer": "Dworakowski, M J",
+        "badge_color": "blue"
+    },
+    {
+        "id": 16,
+        "case_number": "LW  26002273",
+        "type": "Incident",
+        "charge": "THEFT",
+        "raw_datetime": "8/9/2026 13:10",
+        "raw_address": "15300-BLK Detroit Ave, Lakewood, OH",
+        "clean_address": "15300 Detroit Ave, Lakewood, OH",
+        "details": "[Restricted] VICTIM of Theft (C), at 15300-BLK Detroit Ave, Lakewood, OH,  between 13:10, 8/9/2026 and 13:11, 8/9/2026. Reported: 13:11, 8/9/2026.",
+        "officer": "Bixel, J S",
+        "badge_color": "blue"
+    },
+    {
+        "id": 17,
+        "case_number": "LW  26002274",
+        "type": "Incident",
+        "charge": "CRIMINAL MISCHIEF",
+        "raw_datetime": "8/9/2026 13:17",
+        "raw_address": "2100-BLK Chesterland Ave, Lakewood, OH",
+        "clean_address": "2100 Chesterland Ave, Lakewood, OH",
+        "details": "[Restricted] VICTIM of Criminal Mischief (C), at 2100-BLK Chesterland Ave, Lakewood, OH,  between 13:17, 8/9/2026 and 13:18, 8/9/2026. Reported: 13:18, 8/9/2026.",
+        "officer": "Hutchinson, B L",
+        "badge_color": "blue"
+    },
+    {
+        "id": 18,
+        "case_number": "LW  26002278",
+        "type": "Incident",
+        "charge": "DOMESTIC VIOLENCE",
+        "raw_datetime": "8/9/2026 20:00",
+        "raw_address": "12000-BLK Edgewater Dr, Lakewood, OH",
+        "clean_address": "12000 Edgewater Dr, Lakewood, OH",
+        "details": "[Restricted] VICTIM of Domestic Violence (C), at 12000-BLK Edgewater Dr, Lakewood, OH,  between 20:00, 8/9/2026 and 21:38, 8/9/2026. Reported: 21:38, 8/9/2026.",
+        "officer": "Chilson, R J",
+        "badge_color": "blue"
+    }
+]
