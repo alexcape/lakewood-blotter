@@ -1,26 +1,62 @@
 [
     {
         "id": 5,
-        "case_number": "AR   1",
-        "type": "Arrest",
+        "case_number": "LW  26002287",
+        "type": "Incident",
         "charge": "Event Type Filter:\n\n- ALL -\nArrests\nIncidents",
         "raw_datetime": "",
         "raw_address": "Address Restricted",
         "clean_address": "",
         "details": "Export To Excel",
         "officer": "",
-        "badge_color": "red"
+        "badge_color": "blue"
     },
     {
         "id": 11,
-        "case_number": "LW  26002280",
+        "case_number": "LW  26002288",
         "type": "Incident",
-        "charge": "POSSESSION OF DRUGS",
-        "raw_datetime": "8/10/2026 10:00",
+        "charge": "MVA SELF REPORTED ACCIDENT",
+        "raw_datetime": "8/11/2026 16:58",
         "raw_address": "Address Restricted",
         "clean_address": "",
-        "details": "[Restricted] VICTIM of Possession Of Drugs (C), at [Address],   between 10:00, 8/10/2026 and 10:56, 8/10/2026. Reported: 10:56, 8/10/2026.",
-        "officer": "Rovito, G E",
+        "details": "[Missing Name]  VICTIM of Mva Self Reported Accident (C), at [Address],   between 16:58, 8/11/2026 and 16:59, 8/11/2026. Reported: 16:59, 8/11/2026.",
+        "officer": "Wiles, Z D",
+        "badge_color": "blue"
+    },
+    {
+        "id": 12,
+        "case_number": "LW  26002289",
+        "type": "Incident",
+        "charge": "FAILURE TO DISCLOSE PERSONAL INFORMATION",
+        "raw_datetime": "8/11/2026 17:36",
+        "raw_address": "14800-BLK Detroit Ave, Lakewood, OH",
+        "clean_address": "14800 Detroit Ave, Lakewood, OH",
+        "details": "Failure To Disclose Personal Information (C), at 14800-BLK Detroit Ave, Lakewood, OH,  between 17:36, 8/11/2026 and 17:37, 8/11/2026. Reported: 17:37, 8/11/2026.",
+        "officer": "Dascani, N W",
+        "badge_color": "blue"
+    },
+    {
+        "id": 13,
+        "case_number": "LW  26002290",
+        "type": "Incident",
+        "charge": "FAILURE TO COMPLY WITH ORDER OR SIGNAL OF P.O.",
+        "raw_datetime": "8/11/2026 20:22",
+        "raw_address": "1600-BLK W 117th St, Lakewood, OH",
+        "clean_address": "1600 W 117th St, Lakewood, OH",
+        "details": "Failure To Comply With Order Or Signal Of P.o. (C), at 1600-BLK W 117th St, Lakewood, OH,  between 20:22, 8/11/2026 and 20:23, 8/11/2026. Reported: 20:23, 8/11/2026.",
+        "officer": "Kilnapp, M J",
+        "badge_color": "blue"
+    },
+    {
+        "id": 14,
+        "case_number": "LW  26002291",
+        "type": "Incident",
+        "charge": "THEFT",
+        "raw_datetime": "8/11/2026 21:24",
+        "raw_address": "13300-BLK Madison Ave, Lakewood, OH",
+        "clean_address": "13300 Madison Ave, Lakewood, OH",
+        "details": "[Restricted] VICTIM of Theft (C), at 13300-BLK Madison Ave, Lakewood, OH,  between 21:24, 8/11/2026 and 21:26, 8/11/2026. Reported: 21:26, 8/11/2026.",
+        "officer": "Ivanovic, N E",
         "badge_color": "blue"
     }
 ]
