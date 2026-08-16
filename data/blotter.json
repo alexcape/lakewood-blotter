@@ -1,7 +1,7 @@
 [
     {
         "id": 5,
-        "case_number": "AR  260023141",
+        "case_number": "AR  26001224",
         "type": "Arrest",
         "charge": "Event Type Filter:\n\n- ALL -\nArrests\nIncidents",
         "raw_datetime": "",
@@ -12,51 +12,51 @@
         "badge_color": "red"
     },
     {
-        "id": 11,
-        "case_number": "LW  26002309",
+        "id": 10,
+        "case_number": "LW  26002322",
         "type": "Incident",
         "charge": "PROPERTY IMPOUND",
-        "raw_datetime": "8/14/2026 10:23",
+        "raw_datetime": "8/15/2026 06:45",
         "raw_address": "Address Restricted",
         "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Property Impound (C), at [Address],   on 10:23, 8/14/2026. Reported: 10:24, 8/14/2026.",
-        "officer": "Laurio, D M",
+        "details": "[Missing Name]  VICTIM of Property Impound (C), at [Address],   between 06:45, 8/15/2026 and 07:29, 8/15/2026. Reported: 07:29, 8/15/2026.",
+        "officer": "Drewke, M M",
+        "badge_color": "blue"
+    },
+    {
+        "id": 11,
+        "case_number": "LW  26002323",
+        "type": "Incident",
+        "charge": "GIVING FALSE INFORMATION TO LAW ENFORCEMENT OFFICER",
+        "raw_datetime": "8/15/2026 10:44",
+        "raw_address": "1300-BLK Riverside Dr, Lakewood, OH",
+        "clean_address": "1300 Riverside Dr, Lakewood, OH",
+        "details": "Giving False Information To Law Enforcement Officer (C), at 1300-BLK Riverside Dr, Lakewood, OH,  on 10:44, 8/15/2026. Reported: 10:44, 8/15/2026.",
+        "officer": "Costanzo, D A",
         "badge_color": "blue"
     },
     {
         "id": 12,
-        "case_number": "LW  26002310",
+        "case_number": "LW  26002324",
         "type": "Incident",
-        "charge": "MVA INJURY",
-        "raw_datetime": "8/14/2026 11:21",
+        "charge": "MVA GENERAL",
+        "raw_datetime": "8/15/2026 12:44",
         "raw_address": "Address Restricted",
         "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Mva Injury (C), at [Address],   between 11:21, 8/14/2026 and 11:22, 8/14/2026. Reported: 11:22, 8/14/2026.",
+        "details": "[Missing Name]  VICTIM of Mva General (C), at [Address],   between 12:44, 8/15/2026 and 12:45, 8/15/2026. Reported: 12:45, 8/15/2026.",
         "officer": "Wiles, Z D",
         "badge_color": "blue"
     },
     {
         "id": 13,
-        "case_number": "LW  26002313",
+        "case_number": "LW  26002325",
         "type": "Incident",
-        "charge": "MVA SELF REPORTED ACCIDENT",
-        "raw_datetime": "7/31/2026 12:00",
+        "charge": "MVA GENERAL",
+        "raw_datetime": "8/15/2026 13:12",
         "raw_address": "Address Restricted",
         "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Mva Self Reported Accident (C), at [Address],   between 12:00, 7/31/2026 and 17:18, 8/14/2026. Reported: 17:18, 8/14/2026.",
-        "officer": "Johnson, K M",
-        "badge_color": "blue"
-    },
-    {
-        "id": 14,
-        "case_number": "LW  26002316",
-        "type": "Incident",
-        "charge": "PROPERTY FOUND",
-        "raw_datetime": "8/14/2026 19:45",
-        "raw_address": "Address Restricted",
-        "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Property Found (C), at [Address],   between 19:45, 8/14/2026 and 19:46, 8/14/2026. Reported: 20:13, 8/14/2026.",
-        "officer": "Maher, D J",
+        "details": "[Missing Name]  VICTIM of Mva General (C), at [Address],   between 13:12, 8/15/2026 and 13:13, 8/15/2026. Reported: 13:13, 8/15/2026.",
+        "officer": "Wiles, Z D",
         "badge_color": "blue"
     }
 ]
