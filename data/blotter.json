@@ -1,7 +1,7 @@
 [
     {
         "id": 5,
-        "case_number": "AR  260023921",
+        "case_number": "AR   1",
         "type": "Arrest",
         "charge": "Event Type Filter:\n\n- ALL -\nArrests\nIncidents",
         "raw_datetime": "",
@@ -13,38 +13,26 @@
     },
     {
         "id": 10,
-        "case_number": "LW  26002393",
+        "case_number": "LW  26002398",
         "type": "Incident",
-        "charge": "ASSIST OTHER AGENCY",
-        "raw_datetime": "8/22/2026 01:04",
-        "raw_address": "Address Restricted",
-        "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Assist Other Agency (C), at [Address],   between 01:04, 8/22/2026 and 01:05, 8/22/2026. Reported: 01:05, 8/22/2026.",
-        "officer": "Williams, C D",
+        "charge": "CRIMINAL TRESPASS",
+        "raw_datetime": "8/23/2026 02:43",
+        "raw_address": "1400-BLK Newman Ave, Lakewood, OH",
+        "clean_address": "1400 Newman Ave, Lakewood, OH",
+        "details": "[Restricted] VICTIM of Criminal Trespass (C), at 1400-BLK Newman Ave, Lakewood, OH,  between 02:43, 8/23/2026 and 02:44, 8/23/2026. Reported: 02:44, 8/23/2026.",
+        "officer": "Fischer, D C",
         "badge_color": "blue"
     },
     {
         "id": 11,
-        "case_number": "LW  26002394",
+        "case_number": "LW  26002399",
         "type": "Incident",
-        "charge": "MVA GENERAL",
-        "raw_datetime": "8/22/2026 02:00",
-        "raw_address": "Address Restricted",
-        "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Mva General (C), at [Address],   between 02:00, 8/22/2026 and 02:02, 8/22/2026. Reported: 02:02, 8/22/2026.",
-        "officer": "Bly, J J",
-        "badge_color": "blue"
-    },
-    {
-        "id": 12,
-        "case_number": "LW  26002395",
-        "type": "Incident",
-        "charge": "CRIMINAL TRESPASS",
-        "raw_datetime": "8/22/2026 00:19",
-        "raw_address": "12200-BLK Franklin Blvd, Lakewood, OH",
-        "clean_address": "12200 Franklin Blvd, Lakewood, OH",
-        "details": "[Restricted] VICTIM of Criminal Trespass (C), at 12200-BLK Franklin Blvd, Lakewood, OH,  between 00:19, 8/22/2026 and 08:56, 8/22/2026. Reported: 08:56, 8/22/2026.",
-        "officer": "Hannaman, C R",
+        "charge": "USE OR POSSESSION OF PARAPHERNALIA",
+        "raw_datetime": "8/23/2026 08:09",
+        "raw_address": "11800-BLK Detroit Ave, Lakewood, OH",
+        "clean_address": "11800 Detroit Ave, Lakewood, OH",
+        "details": "Use Or Possession Of Paraphernalia (C), at 11800-BLK Detroit Ave, Lakewood, OH,  on 08:09, 8/23/2026. Reported: 08:09, 8/23/2026.",
+        "officer": "Raulerson, K E",
         "badge_color": "blue"
     }
 ]
