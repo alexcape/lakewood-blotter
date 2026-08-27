@@ -1,7 +1,7 @@
 [
     {
         "id": 5,
-        "case_number": "AR  260024151",
+        "case_number": "AR  260024201",
         "type": "Arrest",
         "charge": "Event Type Filter:\n\n- ALL -\nArrests\nIncidents",
         "raw_datetime": "",
@@ -13,14 +13,98 @@
     },
     {
         "id": 11,
-        "case_number": "LW  26002416",
+        "case_number": "AR  26002429",
+        "type": "Arrest",
+        "charge": "Theft (M),",
+        "raw_datetime": "",
+        "raw_address": "15400-BLK Detroit Ave, Lakewood, OH",
+        "clean_address": "15400 Detroit Ave, Lakewood, OH",
+        "details": "Dunlap, John William (W /M/58) Arrest on chrg of Theft (M), at 15400-BLK Detroit Ave, Lakewood, OH,  on 8/26/2026 16:20.",
+        "officer": "Rafter, C N",
+        "badge_color": "red"
+    },
+    {
+        "id": 12,
+        "case_number": "AR  26002435",
+        "type": "Arrest",
+        "charge": "Drug Paraphernalia (M),",
+        "raw_datetime": "",
+        "raw_address": "12000-BLK Lake Ave, Lakewood, OH",
+        "clean_address": "12000 Lake Ave, Lakewood, OH",
+        "details": "Vann, Dexter L (W /M/44) Arrest on chrg of Drug Paraphernalia (M), at 12000-BLK Lake Ave, Lakewood, OH,  on 8/26/2026 20:10.",
+        "officer": "Dulik, M J",
+        "badge_color": "red"
+    },
+    {
+        "id": 13,
+        "case_number": "AR  26002437",
+        "type": "Arrest",
+        "charge": "Operating Vehicle Under The Influence Of Alcohol/ Drugs (M),",
+        "raw_datetime": "",
+        "raw_address": "15700-BLK Clifton Blvd/brockley Ave, Lakewood, OH",
+        "clean_address": "15700 Clifton Blvd/brockley Ave, Lakewood, OH",
+        "details": "Singh, Phillip Atherton (W /M/59) Arrest on chrg of Operating Vehicle Under The Influence Of Alcohol/ Drugs (M), at 15700-BLK Clifton Blvd/brockley Ave, Lakewood, OH,  on 8/26/2026 22:35.",
+        "officer": "Nikolic, V X",
+        "badge_color": "red"
+    },
+    {
+        "id": 14,
+        "case_number": "LW  26002421",
         "type": "Incident",
-        "charge": "MVA GENERAL",
-        "raw_datetime": "8/25/2026 09:00",
+        "charge": "THEFT - FROM MOTOR VEHICLE",
+        "raw_datetime": "8/25/2026 18:00",
+        "raw_address": "2100-BLK Quail St, Lakewood, OH",
+        "clean_address": "2100 Quail St, Lakewood, OH",
+        "details": "[Restricted] VICTIM of Theft - From Motor Vehicle (C), at 2100-BLK Quail St, Lakewood, OH,  between 18:00, 8/25/2026 and 03:45, 8/26/2026. Reported: 03:45, 8/26/2026.",
+        "officer": "Kilnapp, M J",
+        "badge_color": "blue"
+    },
+    {
+        "id": 15,
+        "case_number": "LW  26002423",
+        "type": "Incident",
+        "charge": "MVA SELF REPORTED ACCIDENT",
+        "raw_datetime": "8/24/2026 07:00",
         "raw_address": "Address Restricted",
         "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Mva General (C), at [Address],   between 09:00, 8/25/2026 and 09:01, 8/25/2026. Reported: 09:01, 8/25/2026.",
-        "officer": "Wiles, Z D",
+        "details": "[Missing Name]  VICTIM of Mva Self Reported Accident (C), at [Address],   on 07:00, 8/24/2026. Reported: 10:27, 8/26/2026.",
+        "officer": "Dworakowski, M J",
+        "badge_color": "blue"
+    },
+    {
+        "id": 16,
+        "case_number": "LW  26002424",
+        "type": "Incident",
+        "charge": "PROPERTY IMPOUND",
+        "raw_datetime": "8/26/2026 10:50",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "[Missing Name]  VICTIM of Property Impound (C), at [Address],   on 10:50, 8/26/2026. Reported: 10:50, 8/26/2026.",
+        "officer": "Dworakowski, M J",
+        "badge_color": "blue"
+    },
+    {
+        "id": 17,
+        "case_number": "LW  26002425",
+        "type": "Incident",
+        "charge": "THEFT_GTMV",
+        "raw_datetime": "8/22/2026 18:08",
+        "raw_address": "13900-BLK Detroit Ave, Lakewood, OH",
+        "clean_address": "13900 Detroit Ave, Lakewood, OH",
+        "details": "[Restricted] VICTIM of Theft_gtmv (C), at 13900-BLK Detroit Ave, Lakewood, OH,  between 18:08, 8/22/2026 and 10:39, 8/26/2026. Reported: 10:39, 8/26/2026.",
+        "officer": "Hannaman, C R",
+        "badge_color": "blue"
+    },
+    {
+        "id": 18,
+        "case_number": "LW  26002426",
+        "type": "Incident",
+        "charge": "PROPERTY FOUND",
+        "raw_datetime": "8/26/2026 10:55",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "[Missing Name]  VICTIM of Property Found (C), at [Address],   between 10:55, 8/26/2026 and 10:56, 8/26/2026. Reported: 10:56, 8/26/2026.",
+        "officer": "Prendergast, R P",
         "badge_color": "blue"
     }
 ]
