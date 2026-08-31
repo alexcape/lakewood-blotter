@@ -1,38 +1,38 @@
 [
     {
         "id": 5,
-        "case_number": "AR  26002461",
-        "type": "Arrest",
+        "case_number": "LW  26002466",
+        "type": "Incident",
         "charge": "Event Type Filter:\n\n- ALL -\nArrests\nIncidents",
         "raw_datetime": "",
         "raw_address": "Address Restricted",
         "clean_address": "",
         "details": "Export To Excel",
         "officer": "",
-        "badge_color": "red"
-    },
-    {
-        "id": 10,
-        "case_number": "LW  26002463",
-        "type": "Incident",
-        "charge": "PROPERTY LOST",
-        "raw_datetime": "8/29/2026 10:30",
-        "raw_address": "Address Restricted",
-        "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Property Lost (C), at [Address],   on 10:30, 8/29/2026. Reported: 11:02, 8/29/2026.",
-        "officer": "Drewke, M M",
         "badge_color": "blue"
     },
     {
         "id": 11,
-        "case_number": "LW  26002465",
+        "case_number": "LW  26002467",
         "type": "Incident",
-        "charge": "MVA HIT SKIP",
-        "raw_datetime": "8/29/2026 11:39",
+        "charge": "MVA GENERAL",
+        "raw_datetime": "8/30/2026 10:41",
         "raw_address": "Address Restricted",
         "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Mva Hit Skip (C), at [Address],   between 11:39, 8/29/2026 and 11:40, 8/29/2026. Reported: 11:40, 8/29/2026.",
-        "officer": "Wiles, Z D",
+        "details": "[Missing Name]  VICTIM of Mva General (C), at [Address],   between 10:41, 8/30/2026 and 10:42, 8/30/2026. Reported: 10:42, 8/30/2026.",
+        "officer": "Pickens, R L",
+        "badge_color": "blue"
+    },
+    {
+        "id": 12,
+        "case_number": "LW  26002468",
+        "type": "Incident",
+        "charge": "DEAD ON ARRIVAL",
+        "raw_datetime": "8/29/2026 12:53",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "[Missing Name]  VICTIM of Dead On Arrival (C), at [Address],   between 12:53, 8/29/2026 and 13:06, 8/30/2026. Reported: 13:06, 8/30/2026.",
+        "officer": "Drewke, M M",
         "badge_color": "blue"
     }
 ]
