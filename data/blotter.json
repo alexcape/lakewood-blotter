@@ -1,38 +1,62 @@
 [
     {
         "id": 5,
-        "case_number": "AR  26002478",
-        "type": "Arrest",
+        "case_number": "LW  26002489",
+        "type": "Incident",
         "charge": "Event Type Filter:\n\n- ALL -\nArrests\nIncidents",
         "raw_datetime": "",
         "raw_address": "Address Restricted",
         "clean_address": "",
         "details": "Export To Excel",
         "officer": "",
-        "badge_color": "red"
+        "badge_color": "blue"
     },
     {
         "id": 11,
-        "case_number": "LW  26002478",
+        "case_number": "LW  26002491",
         "type": "Incident",
-        "charge": "OPERATING VEHICLE UNDER THE INFLUENCE OF ALCOHOL/ DRUGS",
-        "raw_datetime": "9/1/2026 02:15",
-        "raw_address": "12900-BLK Berea Rd/lakewood Heights Blvd, Lakewood, OH",
-        "clean_address": "12900 Berea Rd/lakewood Heights Blvd, Lakewood, OH",
-        "details": "Operating Vehicle Under The Influence Of Alcohol/ Drugs (C), at 12900-BLK Berea Rd/lakewood Heights Blvd, Lakewood, OH,  between 02:15, 9/1/2026 and 02:16, 9/1/2026. Reported: 02:16, 9/1/2026.",
-        "officer": "Williams, C D",
+        "charge": "PROPERTY FOUND",
+        "raw_datetime": "9/1/2026 15:45",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "[Missing Name]  VICTIM of Property Found (C), at [Address],   between 15:45, 9/1/2026 and 10:00, 9/2/2026. Reported: 10:00, 9/2/2026.",
+        "officer": "Johnson, K M",
         "badge_color": "blue"
     },
     {
         "id": 12,
-        "case_number": "LW  26002479",
+        "case_number": "LW  26002493",
         "type": "Incident",
-        "charge": "MVA INJURY",
-        "raw_datetime": "9/1/2026 07:47",
+        "charge": "MVA GENERAL",
+        "raw_datetime": "9/2/2026 18:50",
         "raw_address": "Address Restricted",
         "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Mva Injury (C), at [Address],   between 07:47, 9/1/2026 and 07:48, 9/1/2026. Reported: 07:48, 9/1/2026.",
-        "officer": "Kohuth, K J",
+        "details": "[Missing Name]  VICTIM of Mva General (C), at [Address],   between 18:50, 9/2/2026 and 18:51, 9/2/2026. Reported: 18:51, 9/2/2026.",
+        "officer": "Pinto, I V",
+        "badge_color": "blue"
+    },
+    {
+        "id": 13,
+        "case_number": "LW  26002494",
+        "type": "Incident",
+        "charge": "THEFT - SHOPLIFTING",
+        "raw_datetime": "9/2/2026 20:10",
+        "raw_address": "1600-BLK W 117th St, Lakewood, OH",
+        "clean_address": "1600 W 117th St, Lakewood, OH",
+        "details": "[Restricted] VICTIM of Theft - Shoplifting (C), at 1600-BLK W 117th St, Lakewood, OH,  between 20:10, 9/2/2026 and 20:11, 9/2/2026. Reported: 20:11, 9/2/2026.",
+        "officer": "Maher, D J",
+        "badge_color": "blue"
+    },
+    {
+        "id": 14,
+        "case_number": "LW  26002495",
+        "type": "Incident",
+        "charge": "MISSING PERSON",
+        "raw_datetime": "9/2/2026 20:13",
+        "raw_address": "Address Restricted",
+        "clean_address": "",
+        "details": "[Missing Name]  VICTIM of Missing Person (C), at [Address],   between 20:13, 9/2/2026 and 20:14, 9/2/2026. Reported: 20:14, 9/2/2026.",
+        "officer": "Markovic, N A",
         "badge_color": "blue"
     }
 ]
