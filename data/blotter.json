@@ -1,74 +1,38 @@
 [
     {
         "id": 5,
-        "case_number": "AR   1",
-        "type": "Arrest",
+        "case_number": "LW  26002698",
+        "type": "Incident",
         "charge": "Event Type Filter:\n\n- ALL -\nArrests\nIncidents",
         "raw_datetime": "",
         "raw_address": "Address Restricted",
         "clean_address": "",
         "details": "Export To Excel",
         "officer": "",
-        "badge_color": "red"
+        "badge_color": "blue"
     },
     {
         "id": 11,
-        "case_number": "LW  26002692",
+        "case_number": "LW  26002700",
         "type": "Incident",
         "charge": "MVA HIT SKIP",
-        "raw_datetime": "9/21/2026 08:38",
+        "raw_datetime": "9/22/2026 13:21",
         "raw_address": "Address Restricted",
         "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Mva Hit Skip (C), at [Address],   between 08:38, 9/21/2026 and 08:39, 9/21/2026. Reported: 08:39, 9/21/2026.",
-        "officer": "Wiles, Z D",
+        "details": "[Restricted] VICTIM of Mva Hit Skip (C), at [Address],   between 13:21, 9/22/2026 and 13:22, 9/22/2026. Reported: 13:22, 9/22/2026.",
+        "officer": "Summerville, R J",
         "badge_color": "blue"
     },
     {
         "id": 12,
-        "case_number": "LW  26002694",
+        "case_number": "LW  26002701",
         "type": "Incident",
-        "charge": "MVA GENERAL",
-        "raw_datetime": "9/21/2026 13:57",
+        "charge": "MVA HIT SKIP",
+        "raw_datetime": "9/22/2026 19:16",
         "raw_address": "Address Restricted",
         "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Mva General (C), at [Address],   between 13:57, 9/21/2026 and 13:58, 9/21/2026. Reported: 13:58, 9/21/2026.",
-        "officer": "Wiles, Z D",
-        "badge_color": "blue"
-    },
-    {
-        "id": 13,
-        "case_number": "LW  26002695",
-        "type": "Incident",
-        "charge": "DISORDERLY CONDUCT",
-        "raw_datetime": "9/21/2026 17:12",
-        "raw_address": "14100-BLK Detroit Ave, Lakewood, OH",
-        "clean_address": "14100 Detroit Ave, Lakewood, OH",
-        "details": "Disorderly Conduct (C), at 14100-BLK Detroit Ave, Lakewood, OH,  between 17:12, 9/21/2026 and 17:16, 9/21/2026. Reported: 17:18, 9/21/2026.",
-        "officer": "Yoe, J A",
-        "badge_color": "blue"
-    },
-    {
-        "id": 14,
-        "case_number": "LW  26002696",
-        "type": "Incident",
-        "charge": "MVA GENERAL",
-        "raw_datetime": "9/21/2026 19:26",
-        "raw_address": "Address Restricted",
-        "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Mva General (C), at [Address],   on 19:26, 9/21/2026. Reported: 19:26, 9/21/2026.",
-        "officer": "Bixel, J S",
-        "badge_color": "blue"
-    },
-    {
-        "id": 15,
-        "case_number": "LW  26002697",
-        "type": "Incident",
-        "charge": "OPERATING VEHICLE UNDER THE INFLUENCE OF ALCOHOL/ DRUGS",
-        "raw_datetime": "9/21/2026 20:20",
-        "raw_address": "1500-BLK Chesterland Ave/franklin Blvd, Lakewood, OH",
-        "clean_address": "1500 Chesterland Ave/franklin Blvd, Lakewood, OH",
-        "details": "Operating Vehicle Under The Influence Of Alcohol/ Drugs (C), at 1500-BLK Chesterland Ave/franklin Blvd, Lakewood, OH,  between 20:20, 9/21/2026 and 20:50, 9/21/2026. Reported: 20:50, 9/21/2026.",
-        "officer": "Pinto, I V",
+        "details": "[Missing Name]  VICTIM of Mva Hit Skip (C), at [Address],   on 19:16, 9/22/2026. Reported: 19:16, 9/22/2026.",
+        "officer": "Allen, T L",
         "badge_color": "blue"
     }
 ]
