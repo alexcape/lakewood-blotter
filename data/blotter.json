@@ -1,7 +1,7 @@
 [
     {
         "id": 5,
-        "case_number": "LW  26002735",
+        "case_number": "LW  26002744",
         "type": "Incident",
         "charge": "Event Type Filter:\n\n- ALL -\nArrests\nIncidents",
         "raw_datetime": "",
@@ -12,39 +12,27 @@
         "badge_color": "blue"
     },
     {
-        "id": 12,
-        "case_number": "LW  26002736",
+        "id": 10,
+        "case_number": "LW  26002745",
         "type": "Incident",
-        "charge": "MVA GENERAL",
-        "raw_datetime": "9/26/2026 10:08",
-        "raw_address": "Address Restricted",
-        "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Mva General (C), at [Address],   between 10:08, 9/26/2026 and 10:09, 9/26/2026. Reported: 10:09, 9/26/2026.",
-        "officer": "Pickens, R L",
-        "badge_color": "blue"
-    },
-    {
-        "id": 13,
-        "case_number": "LW  26002737",
-        "type": "Incident",
-        "charge": "THEFT",
-        "raw_datetime": "9/26/2026 10:33",
-        "raw_address": "1600-BLK W 117th St, Lakewood, OH",
-        "clean_address": "1600 W 117th St, Lakewood, OH",
-        "details": "[Restricted] VICTIM of Theft (C), at 1600-BLK W 117th St, Lakewood, OH,  between 10:33, 9/26/2026 and 10:46, 9/26/2026. Reported: 11:09, 9/26/2026.",
+        "charge": "FAILURE TO COMPLY WITH ORDER OR SIGNAL OF P.O.",
+        "raw_datetime": "9/27/2026 15:42",
+        "raw_address": "11700-BLK Madison Ave, Lakewood, OH",
+        "clean_address": "11700 Madison Ave, Lakewood, OH",
+        "details": "Failure To Comply With Order Or Signal Of P.o. (C), at 11700-BLK Madison Ave, Lakewood, OH,  on 15:42, 9/27/2026. Reported: 15:42, 9/27/2026.",
         "officer": "Billman, R J",
         "badge_color": "blue"
     },
     {
-        "id": 14,
-        "case_number": "LW  26002738",
+        "id": 11,
+        "case_number": "LW  26002747",
         "type": "Incident",
-        "charge": "MVA INJURY",
-        "raw_datetime": "9/26/2026 14:59",
+        "charge": "ANIMAL COMPLAINT",
+        "raw_datetime": "9/27/2026 19:08",
         "raw_address": "Address Restricted",
         "clean_address": "",
-        "details": "[Missing Name]  VICTIM of Mva Injury (C), at [Address],   between 14:59, 9/26/2026 and 15:00, 9/26/2026. Reported: 15:00, 9/26/2026.",
-        "officer": "Pickens, R L",
+        "details": "[Missing Name]  VICTIM of Animal Complaint (C), at [Address],   on 19:08, 9/27/2026. Reported: 19:08, 9/27/2026.",
+        "officer": "Bixel, J S",
         "badge_color": "blue"
     }
 ]
